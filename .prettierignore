@@ -1,0 +1,5 @@
+conformance/
+dist/
+coverage/
+node_modules/
+scripts/gen_goldens.py

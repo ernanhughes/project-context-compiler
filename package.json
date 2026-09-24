@@ -1,0 +1,49 @@
+{
+  "name": "project-context-compiler",
+  "version": "0.2.0",
+  "description": "Deterministic compiler for assembling bounded, policy-governed context for AI model invocations. TypeScript library, CLI, and OpenCode plugin.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts"
+  },
+  "files": [
+    "index.ts",
+    "src",
+    "conformance",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/core/*.test.ts tests/conformance/*.test.ts tests/opencode/*.test.ts",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "pack-check": "npm pack --dry-run",
+    "conformance": "node src/cli.ts conformance"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "dependencies": {
+    "@opencode/plugin": "^2.0.16"
+  },
+  "devDependencies": {
+    "@types/node": "25.0.3",
+    "prettier": "3.9.9",
+    "typescript": "7.0.2"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ernanhughes/project-context-compiler.git"
+  },
+  "keywords": [
+    "context-engineering",
+    "deterministic",
+    "opencode",
+    "opencode-plugin"
+  ]
+}
