@@ -14,86 +14,52 @@ context compilation asks:
     under this budget and these policies?
 ```
 
-Compilation is deliberately separated from everything around it:
+Use it three ways:
 
 ```text
-candidate generation
-≠
-admission
-≠
-assembly
-≠
-rendering
-≠
-model evaluation
+TypeScript library
+CLI / JSON boundary
+OpenCode plugin
 ```
 
-The compiler owns the middle problem: **admission, assembly, and
-validation**. It never retrieves, never calls a model, and never
-judges whether an answer was good.
+## Library
 
-## Pipeline
-
-```text
-validate inputs
-  ↓
-explicit required-source check
-  ↓
-hard eligibility gates (scope / freshness / authority / floor)
-  ↓
-mandatory admission (cheapest legal form, groups atomic)
-  ↓
-required admission
-  ↓
-preferred / discretionary admission (earn rule + coverage)
-  ↓
-alternative-form closeout
-  ↓
-deterministic ordering
-  ↓
-render + exact budget validation + policy-governed repair
-  ↓
-trace + bundle OR explicit failure
+```ts
+import {
+  compileContext,
+  defaultPolicy,
+  validateBundle,
+  validateResult,
+  renderBundleText,
+  type ContextCandidate,
+  type ContextRequest,
+  type CompilerPolicy,
+  type CompileOutput,
+} from "project-context-compiler/core";
 ```
 
-## Install
+```ts
+const output: CompileOutput = compileContext(
+  request,
+  candidates,
+  defaultPolicy(),
+);
 
-```powershell
-pip install git+https://github.com/ernanhughes/project-context-compiler.git
+if (output.result.success) {
+  const bundle = output.bundle; // exact ordered ContextBundle
+  const trace = output.result.trace; // complete DecisionTrace
+} else {
+  console.log(output.result.failure?.reason); // machine-readable, never a guess
+}
 ```
 
-Requires Python 3.11+. Zero runtime dependencies — standard library
-only. No LLM, no network, no API keys.
-
-## Use
-
-```python
-from context_compiler import (
-    ContextCandidate,
-    ContextRequest,
-    CompilerPolicy,
-    CompileOutput,
-    compile_context,
-    default_policy,
-)
-
-result: CompileOutput = compile_context(
-    request=request,
-    candidates=candidates,
-    policy=default_policy(),
-)
-
-if result.result.success:
-    bundle = result.bundle      # exact ordered ContextBundle
-    trace = result.result.trace # complete DecisionTrace
-else:
-    failure = result.result.failure
-    print(failure.reason)       # machine-readable, never a guess
-```
+The core (`project-context-compiler/core`) has zero runtime
+dependencies beyond Node builtins: no models, no network, no
+OpenCode. Identical inputs yield identical outputs.
 
 ## Worked example
 
-More than top-k. Suppose:
+More than top-k:
 
 ```text
 Candidate A:  relevance 0.95, wrong scope
@@ -102,33 +68,21 @@ Candidate D:  DISCRETIONARY, cheap, relevance 0.1
 Budget:       finite
 ```
 
-Compilation gives:
-
 ```text
 A rejected by the hard scope gate (relevance is irrelevant)
 
 B admitted only if B + C both fit, with C emitted once
 
-D excluded despite spare capacity (earns nothing: low relevance,
-no new coverage) — positive slack is legal
+D excluded despite spare capacity (earns nothing)
 
 or an explicit CompileFailure if B + C cannot legally fit
 ```
 
-Relevance never launders hard illegality. Mandatory content is
-never silently truncated to fit.
-
 ## Failure is a feature
 
-If no legal bundle exists, Context Compiler reports failure instead
-of fabricating one by silently truncating required information:
-
-```python
-output = compile_context(...)
-
-if not output.result.success:
-    print(output.result.failure.reason)
-```
+> If no legal bundle exists, Context Compiler reports failure
+> instead of fabricating one by silently truncating required
+> information.
 
 ```text
 INSUFFICIENT_BUDGET
@@ -138,9 +92,6 @@ UNRESOLVED_REQUIRED_GROUP
 REQUIRED_SOURCE_UNAVAILABLE
 REQUIRED_INELIGIBLE
 ```
-
-Every failure still carries the complete decision trace, so you can
-see exactly which gate each candidate hit.
 
 ## Deterministic reproducibility
 
@@ -155,7 +106,6 @@ same trace
 ```
 
 No model nondeterminism. No network. No clock. No random seed.
-Thousands of cheap offline compilations behave identically.
 
 ## CLI
 
@@ -175,87 +125,124 @@ context-compiler validate `
     --policy policy.json
 ```
 
-## Conformance
+The CLI is the language-neutral boundary: the Python research
+harness in `project-context` drives the TypeScript compiler
+through JSON files. Historical runs pin the Python reference
+(`python-v0.1.0` tag); new use goes through this CLI.
 
-The canonical compiler-v1 suite — 14 synthetic fixtures × 3
-budgets — ships with the package:
+## OpenCode plugin
+
+Install directly from GitHub:
+
+```powershell
+opencode plugin add github:ernanhughes/project-context-compiler
+opencode plugin check
+opencode plugin update
+```
+
+This registers three explicit tools and nothing else:
 
 ```text
+context_compiler_compile
+context_compiler_validate
+context_compiler_inspect
+```
+
+> Installing the plugin does not automatically recompile or mutate
+> OpenCode model context. The plugin exposes explicit deterministic
+> compiler operations. Automatic assembly belongs to a later
+> integration layer once candidate construction is explicit.
+
+Capture/injection/observation remain owned by
+[Project Context OpenCode](https://github.com/ernanhughes/project-context-opencode),
+which can import this package directly:
+
+```ts
+import {
+  compileContext,
+  renderBundleText,
+} from "project-context-compiler/core";
+```
+
+## Conformance
+
+The canonical compiler-v1 suite (14 fixtures × 3 budgets) plus
+the frozen Python v0.1.0 golden outputs ship with the package:
+
+```powershell
 context-compiler conformance
+node --test tests/conformance/parity.test.ts
 ```
 
 ```text
-Context Compiler conformance
-
-fixtures: 14
-budgets: 3
 cases: 42
-
-success cases: 34
-expected failure cases: 8
-
 semantic mismatches: 0
-serialization mismatches: 0
-budget violations: 0
-
 PASS
 ```
 
-## Trace inspection
+## Versions
 
-Every considered candidate receives exactly one terminal trace
-entry (`ADMITTED`, `REJECTED_HARD`, `REJECTED_BUDGET`,
-`REJECTED_REDUNDANT`, `REJECTED_ALTERNATIVE`,
-`REJECTED_DEPENDENCY`, `REJECTED_GROUP`) with reason codes,
-marginal costs, dependency closure, and budget before/after. The
-trace explains exclusions, not just admissions.
+```text
+0.1.0 = Python reference implementation (tag python-v0.1.0)
+0.2.0 = TypeScript canonical implementation
+```
 
-## Rendering for transport
+Retrieve the Python source any time with:
 
-`render_bundle_text` turns an exact bundle into exact text between
-stable `[CONTEXT BUNDLE]` markers for demonstration and
-integration. Downstream transports (for example
-[Project Context OpenCode](https://github.com/ernanhughes/project-context-opencode))
-wrap this output without changing what was admitted.
+```text
+git checkout python-v0.1.0
+```
+
+Serialized `project_context.*.v1` schemas are unchanged across the
+port: a language move is not a schema change.
 
 ## Ecosystem
 
 ```text
 project-context
     research / experiments / evidence
-
 project-context-compiler (this package)
     deterministic context assembly
-
 project-context-opencode
     OpenCode transport / intervention / observation
 ```
 
-And the questions divide cleanly:
-
 ```text
 Context Compiler:
-    What should this computation receive?
+    What exact context should this computation receive?
 
 Project Context OpenCode:
-    Did the runtime actually receive it?
+    Did that context actually reach the OpenCode model-context boundary?
 
 Project Context:
-    Did receiving it change behaviour, and was that change useful?
+    Did supplying it change behaviour, and was the change useful?
 ```
-
-Historical compiler experiments and frozen evidence remain in
-`project-context`; this package owns the mechanism.
 
 ## Positioning
 
-Guaranteed structural properties under explicit inputs and
-policies: deterministic, budget-bounded, policy-governed,
-traceable, explicitly failing when no legal bundle exists.
+Structural guarantees under explicit inputs and policies:
 
-Not claimed: optimal context, better answers, or any behavioural
-effect. Whether compiled context helps is a separate empirical
-question for `project-context` experiments.
+```text
+deterministic
+budget-bounded
+policy-governed
+traceable
+explicit failure
+reproducible
+```
+
+Not claimed: optimal context, better answers, automatic
+understanding of arbitrary repositories, retrieval replacement.
+Behavioural usefulness is a separate empirical question.
+
+## Develop
+
+```powershell
+npm install
+npm run typecheck
+npm test
+npm run lint
+```
 
 ## Licence
 
