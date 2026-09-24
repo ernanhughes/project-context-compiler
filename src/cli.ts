@@ -34,7 +34,7 @@ import {
   runConformance,
 } from "./conformance/index.ts";
 
-const VERSION = "0.2.1";
+const VERSION = "0.2.2";
 
 function readJSON(path: string): unknown {
   return JSON.parse(readFileSync(path, "utf-8")) as unknown;

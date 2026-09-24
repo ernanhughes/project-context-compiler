@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.2.1
+## 0.2.2
+
+Packaging only, no compiler behaviour change.
+
+- run the `dist/` build on Git install (`prepare`), so Git
+  consumers receive compiled output without a local build step
 
 Packaging only, no compiler behaviour change.
 

@@ -1,6 +1,6 @@
 {
   "name": "project-context-compiler",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Deterministic compiler for assembling bounded, policy-governed context for AI model invocations. TypeScript library, CLI, and OpenCode plugin.",
   "type": "module",
   "main": "./dist/index.js",
@@ -30,6 +30,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "prepack": "npm run build",
+    "prepare": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/core/*.test.ts tests/conformance/*.test.ts tests/opencode/*.test.ts",
     "lint": "prettier --check .",
