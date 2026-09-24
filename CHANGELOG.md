@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.3
+
+Packaging only, no compiler behaviour change.
+
+- commit `dist/` so Git installs work without a build step
+  (installer environments may omit dev dependencies); `prepare`
+  rebuilds only when `dist` is absent
+
 ## 0.2.2
 
 Packaging only, no compiler behaviour change.

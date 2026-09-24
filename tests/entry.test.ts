@@ -41,7 +41,7 @@ test("package.json declares dual entries and plugin dependency", () => {
     dependencies: Record<string, string>;
   };
   equal(manifest.name, "project-context-compiler");
-  equal(manifest.version, "0.2.2");
+  equal(manifest.version, "0.2.3");
   deepStrictEqual(manifest.exports, {
     ".": "./src/index.ts",
     "./core": "./src/core/index.ts",
