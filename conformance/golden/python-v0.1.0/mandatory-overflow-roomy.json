@@ -1,0 +1,222 @@
+{
+  "admitted_candidate_ids": [
+    "mand-a",
+    "mand-b",
+    "small-disc"
+  ],
+  "admitted_representation_ids": [
+    "full",
+    "full",
+    "full"
+  ],
+  "budget": "roomy",
+  "bundle": {
+    "created_at": "2026-09-23T00:00:00Z",
+    "evidence_class": "synthetic",
+    "id": "mandatory-overflow-req-roomy-bundle",
+    "items": [
+      {
+        "authority": null,
+        "content": "First mandatory constraint block (synthetic).",
+        "id": "mand-a",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 0,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 2003,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Second mandatory constraint block (synthetic).",
+        "id": "mand-b",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 1,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 2503,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Small optional note (synthetic).",
+        "id": "small-disc",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 2,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 53,
+        "token_provenance": "approximation"
+      }
+    ],
+    "layout_trace": [
+      "mand-a",
+      "mand-b",
+      "small-disc"
+    ],
+    "provenance": null,
+    "schema_version": "project_context.context_bundle.v1"
+  },
+  "bundle_hash": "3a1c23414b68611efe56cb56fad932db89c762fb58eec1ec1a94c35deae4cec0",
+  "bundle_order": [
+    "mand-a",
+    "mand-b",
+    "small-disc"
+  ],
+  "bundle_tokens": 4565,
+  "failure": null,
+  "fixture": "mandatory-overflow",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": "[CONTEXT BUNDLE]\nid: mandatory-overflow-req-roomy-bundle\nitems: 3\n---\nFirst mandatory constraint block (synthetic).\n---\nSecond mandatory constraint block (synthetic).\n---\nSmall optional note (synthetic).\n[/CONTEXT BUNDLE]\n",
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "mandatory-overflow-req-roomy",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "mandatory-overflow-task",
+    "usable_token_budget": 5000
+  },
+  "result": {
+    "bundle_hash": "3a1c23414b68611efe56cb56fad932db89c762fb58eec1ec1a94c35deae4cec0",
+    "bundle_id": "mandatory-overflow-req-roomy-bundle",
+    "bundle_tokens": 4565,
+    "failure": null,
+    "policy_version": "compiler-policy-v1",
+    "request_id": "mandatory-overflow-req-roomy",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": true,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 5000,
+          "budget_before": 5000,
+          "candidate_id": "mand-a",
+          "content_identity": "mand-a",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 2000,
+          "position": 0,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 3000,
+          "budget_before": 3000,
+          "candidate_id": "mand-b",
+          "content_identity": "mand-b",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 2500,
+          "position": 1,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 500,
+          "budget_before": 500,
+          "candidate_id": "small-disc",
+          "content_identity": "small-disc",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 50,
+          "position": 2,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "admitted",
+          "reason_detail": "discretionary-greedy",
+          "relevance": 0.5,
+          "representation_id": "full"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "mandatory-overflow-req-roomy",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": true,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 5000,
+        "budget_before": 5000,
+        "candidate_id": "mand-a",
+        "content_identity": "mand-a",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 2000,
+        "position": 0,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 3000,
+        "budget_before": 3000,
+        "candidate_id": "mand-b",
+        "content_identity": "mand-b",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 2500,
+        "position": 1,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 500,
+        "budget_before": 500,
+        "candidate_id": "small-disc",
+        "content_identity": "small-disc",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 50,
+        "position": 2,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "admitted",
+        "reason_detail": "discretionary-greedy",
+        "relevance": 0.5,
+        "representation_id": "full"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "mandatory-overflow-req-roomy",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "admitted_candidate_ids": [
+    "instr-1",
+    "taskreq-1"
+  ],
+  "admitted_representation_ids": [
+    "full",
+    "full"
+  ],
+  "budget": "tight",
+  "bundle": {
+    "created_at": "2026-09-23T00:00:00Z",
+    "evidence_class": "synthetic",
+    "id": "rendered-overflow-req-tight-bundle",
+    "items": [
+      {
+        "authority": null,
+        "content": "Application constraint (synthetic): never modify generated files.",
+        "id": "instr-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 0,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 63,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Investigate the migration failure (synthetic).",
+        "id": "taskreq-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 1,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 43,
+        "token_provenance": "approximation"
+      }
+    ],
+    "layout_trace": [
+      "instr-1",
+      "taskreq-1"
+    ],
+    "provenance": null,
+    "schema_version": "project_context.context_bundle.v1"
+  },
+  "bundle_hash": "bc44f07050e995d33ef5519d5e18780110328964d87327cdd931569cd3b5a8a8",
+  "bundle_order": [
+    "instr-1",
+    "taskreq-1"
+  ],
+  "bundle_tokens": 111,
+  "failure": null,
+  "fixture": "rendered-overflow",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": "[CONTEXT BUNDLE]\nid: rendered-overflow-req-tight-bundle\nitems: 2\n---\nApplication constraint (synthetic): never modify generated files.\n---\nInvestigate the migration failure (synthetic).\n[/CONTEXT BUNDLE]\n",
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "rendered-overflow-req-tight",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "rendered-overflow-task",
+    "usable_token_budget": 250
+  },
+  "result": {
+    "bundle_hash": "bc44f07050e995d33ef5519d5e18780110328964d87327cdd931569cd3b5a8a8",
+    "bundle_id": "rendered-overflow-req-tight-bundle",
+    "bundle_tokens": 111,
+    "failure": null,
+    "policy_version": "compiler-policy-v1",
+    "request_id": "rendered-overflow-req-tight",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": true,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 150,
+          "budget_before": 150,
+          "candidate_id": "disc-a",
+          "content_identity": "disc-a",
+          "decision": "REJECTED_BUDGET",
+          "dependency_closure": [],
+          "marginal_cost": 150,
+          "position": null,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "repair-drop",
+          "reason_detail": "removed by render-overrun repair",
+          "relevance": 0.8,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 250,
+          "budget_before": 250,
+          "candidate_id": "instr-1",
+          "content_identity": "instr",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 60,
+          "position": 0,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 190,
+          "budget_before": 190,
+          "candidate_id": "taskreq-1",
+          "content_identity": "taskreq",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 40,
+          "position": 1,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "rendered-overflow-req-tight",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": true,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 150,
+        "budget_before": 150,
+        "candidate_id": "disc-a",
+        "content_identity": "disc-a",
+        "decision": "REJECTED_BUDGET",
+        "dependency_closure": [],
+        "marginal_cost": 150,
+        "position": null,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "repair-drop",
+        "reason_detail": "removed by render-overrun repair",
+        "relevance": 0.8,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 250,
+        "budget_before": 250,
+        "candidate_id": "instr-1",
+        "content_identity": "instr",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 60,
+        "position": 0,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 190,
+        "budget_before": 190,
+        "candidate_id": "taskreq-1",
+        "content_identity": "taskreq",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 40,
+        "position": 1,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "rendered-overflow-req-tight",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}

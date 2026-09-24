@@ -1,0 +1,252 @@
+{
+  "admitted_candidate_ids": [
+    "instr-1",
+    "taskreq-1",
+    "fresh-full"
+  ],
+  "admitted_representation_ids": [
+    "full",
+    "full",
+    "full"
+  ],
+  "budget": "medium",
+  "bundle": {
+    "created_at": "2026-09-23T00:00:00Z",
+    "evidence_class": "synthetic",
+    "id": "stale-cheap-req-medium-bundle",
+    "items": [
+      {
+        "authority": null,
+        "content": "Application constraint (synthetic): never modify generated files.",
+        "id": "instr-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 0,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 63,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Investigate the migration failure (synthetic).",
+        "id": "taskreq-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 1,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 43,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Current branch state (synthetic, validated).",
+        "id": "fresh-full",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 2,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 603,
+        "token_provenance": "approximation"
+      }
+    ],
+    "layout_trace": [
+      "instr-1",
+      "taskreq-1",
+      "fresh-full"
+    ],
+    "provenance": null,
+    "schema_version": "project_context.context_bundle.v1"
+  },
+  "bundle_hash": "3b2095bf95957fc97a785b5905a2aca31b855ac77b60f2129de54976f236cf7d",
+  "bundle_order": [
+    "instr-1",
+    "taskreq-1",
+    "fresh-full"
+  ],
+  "bundle_tokens": 715,
+  "failure": null,
+  "fixture": "stale-cheap",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": "[CONTEXT BUNDLE]\nid: stale-cheap-req-medium-bundle\nitems: 3\n---\nApplication constraint (synthetic): never modify generated files.\n---\nInvestigate the migration failure (synthetic).\n---\nCurrent branch state (synthetic, validated).\n[/CONTEXT BUNDLE]\n",
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "stale-cheap-req-medium",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "stale-cheap-task",
+    "usable_token_budget": 1200
+  },
+  "result": {
+    "bundle_hash": "3b2095bf95957fc97a785b5905a2aca31b855ac77b60f2129de54976f236cf7d",
+    "bundle_id": "stale-cheap-req-medium-bundle",
+    "bundle_tokens": 715,
+    "failure": null,
+    "policy_version": "compiler-policy-v1",
+    "request_id": "stale-cheap-req-medium",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": true,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 1100,
+          "budget_before": 1100,
+          "candidate_id": "fresh-full",
+          "content_identity": "obs-state",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 600,
+          "position": 2,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "admitted",
+          "reason_detail": "discretionary-greedy",
+          "relevance": 0.75,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 1200,
+          "budget_before": 1200,
+          "candidate_id": "instr-1",
+          "content_identity": "instr",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 60,
+          "position": 0,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 1200,
+          "budget_before": 1200,
+          "candidate_id": "stale-compact",
+          "content_identity": "obs-state",
+          "decision": "REJECTED_HARD",
+          "dependency_closure": [],
+          "marginal_cost": 0,
+          "position": null,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "freshness_ineligible",
+          "reason_detail": "freshness: superseded by newer observation",
+          "relevance": 0.9,
+          "representation_id": "compact"
+        },
+        {
+          "budget_after": 1140,
+          "budget_before": 1140,
+          "candidate_id": "taskreq-1",
+          "content_identity": "taskreq",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 40,
+          "position": 1,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "stale-cheap-req-medium",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": true,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 1100,
+        "budget_before": 1100,
+        "candidate_id": "fresh-full",
+        "content_identity": "obs-state",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 600,
+        "position": 2,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "admitted",
+        "reason_detail": "discretionary-greedy",
+        "relevance": 0.75,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 1200,
+        "budget_before": 1200,
+        "candidate_id": "instr-1",
+        "content_identity": "instr",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 60,
+        "position": 0,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 1200,
+        "budget_before": 1200,
+        "candidate_id": "stale-compact",
+        "content_identity": "obs-state",
+        "decision": "REJECTED_HARD",
+        "dependency_closure": [],
+        "marginal_cost": 0,
+        "position": null,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "freshness_ineligible",
+        "reason_detail": "freshness: superseded by newer observation",
+        "relevance": 0.9,
+        "representation_id": "compact"
+      },
+      {
+        "budget_after": 1140,
+        "budget_before": 1140,
+        "candidate_id": "taskreq-1",
+        "content_identity": "taskreq",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 40,
+        "position": 1,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "stale-cheap-req-medium",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}

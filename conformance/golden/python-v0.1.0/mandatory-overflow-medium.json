@@ -1,0 +1,114 @@
+{
+  "admitted_candidate_ids": [],
+  "admitted_representation_ids": [],
+  "budget": "medium",
+  "bundle": null,
+  "bundle_hash": null,
+  "bundle_order": [],
+  "bundle_tokens": null,
+  "failure": {
+    "blocking_ids": [
+      "mand-b"
+    ],
+    "budget_total": 4400,
+    "budget_used": 2000,
+    "diagnostic": "mandatory mand-b closure exceeds remaining budget",
+    "policy_version": "compiler-policy-v1",
+    "reason": "INSUFFICIENT_BUDGET",
+    "request_id": "mandatory-overflow-req-medium",
+    "schema_version": "project_context.compile_failure.v1"
+  },
+  "fixture": "mandatory-overflow",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": null,
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "mandatory-overflow-req-medium",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "mandatory-overflow-task",
+    "usable_token_budget": 4400
+  },
+  "result": {
+    "bundle_hash": null,
+    "bundle_id": null,
+    "bundle_tokens": null,
+    "failure": {
+      "blocking_ids": [
+        "mand-b"
+      ],
+      "budget_total": 4400,
+      "budget_used": 2000,
+      "diagnostic": "mandatory mand-b closure exceeds remaining budget",
+      "policy_version": "compiler-policy-v1",
+      "reason": "INSUFFICIENT_BUDGET",
+      "request_id": "mandatory-overflow-req-medium",
+      "schema_version": "project_context.compile_failure.v1"
+    },
+    "policy_version": "compiler-policy-v1",
+    "request_id": "mandatory-overflow-req-medium",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": false,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 4400,
+          "budget_before": 4400,
+          "candidate_id": "mand-a",
+          "content_identity": "mand-a",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 2000,
+          "position": null,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "mandatory-overflow-req-medium",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": false,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 4400,
+        "budget_before": 4400,
+        "candidate_id": "mand-a",
+        "content_identity": "mand-a",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 2000,
+        "position": null,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "mandatory-overflow-req-medium",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}

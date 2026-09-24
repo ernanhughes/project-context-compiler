@@ -1,0 +1,144 @@
+{
+  "admitted_candidate_ids": [],
+  "admitted_representation_ids": [],
+  "budget": "roomy",
+  "bundle": null,
+  "bundle_hash": null,
+  "bundle_order": [],
+  "bundle_tokens": null,
+  "failure": {
+    "blocking_ids": [
+      "mand-low"
+    ],
+    "budget_total": 2000,
+    "budget_used": 60,
+    "diagnostic": "mandatory mand-low: all forms violate floor",
+    "policy_version": "compiler-policy-v1",
+    "reason": "NO_LEGAL_REPRESENTATION",
+    "request_id": "no-legal-representation-req-roomy",
+    "schema_version": "project_context.compile_failure.v1"
+  },
+  "fixture": "no-legal-representation",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": null,
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "no-legal-representation-req-roomy",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "no-legal-representation-task",
+    "usable_token_budget": 2000
+  },
+  "result": {
+    "bundle_hash": null,
+    "bundle_id": null,
+    "bundle_tokens": null,
+    "failure": {
+      "blocking_ids": [
+        "mand-low"
+      ],
+      "budget_total": 2000,
+      "budget_used": 60,
+      "diagnostic": "mandatory mand-low: all forms violate floor",
+      "policy_version": "compiler-policy-v1",
+      "reason": "NO_LEGAL_REPRESENTATION",
+      "request_id": "no-legal-representation-req-roomy",
+      "schema_version": "project_context.compile_failure.v1"
+    },
+    "policy_version": "compiler-policy-v1",
+    "request_id": "no-legal-representation-req-roomy",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": false,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 2000,
+          "budget_before": 2000,
+          "candidate_id": "instr-1",
+          "content_identity": "instr",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 60,
+          "position": null,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 2000,
+          "budget_before": 2000,
+          "candidate_id": "mand-low",
+          "content_identity": "mand-low",
+          "decision": "REJECTED_HARD",
+          "dependency_closure": [],
+          "marginal_cost": 0,
+          "position": null,
+          "priority_band": "MANDATORY",
+          "reason_code": "illegal_representation",
+          "reason_detail": "form_rank 2 below floor 3",
+          "relevance": 0.9,
+          "representation_id": "compact"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "no-legal-representation-req-roomy",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": false,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 2000,
+        "budget_before": 2000,
+        "candidate_id": "instr-1",
+        "content_identity": "instr",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 60,
+        "position": null,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 2000,
+        "budget_before": 2000,
+        "candidate_id": "mand-low",
+        "content_identity": "mand-low",
+        "decision": "REJECTED_HARD",
+        "dependency_closure": [],
+        "marginal_cost": 0,
+        "position": null,
+        "priority_band": "MANDATORY",
+        "reason_code": "illegal_representation",
+        "reason_detail": "form_rank 2 below floor 3",
+        "relevance": 0.9,
+        "representation_id": "compact"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "no-legal-representation-req-roomy",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}

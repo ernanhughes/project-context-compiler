@@ -1,0 +1,271 @@
+{
+  "admitted_candidate_ids": [
+    "instr-1",
+    "taskreq-1",
+    "cyc-a",
+    "cyc-b"
+  ],
+  "admitted_representation_ids": [
+    "full",
+    "full",
+    "full",
+    "full"
+  ],
+  "budget": "medium",
+  "bundle": {
+    "created_at": "2026-09-23T00:00:00Z",
+    "evidence_class": "synthetic",
+    "id": "dependency-cycle-req-medium-bundle",
+    "items": [
+      {
+        "authority": null,
+        "content": "Application constraint (synthetic): never modify generated files.",
+        "id": "instr-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 0,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 63,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Investigate the migration failure (synthetic).",
+        "id": "taskreq-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 1,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 43,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "First cyclic note (synthetic).",
+        "id": "cyc-a",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 2,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 103,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Second cyclic note (synthetic).",
+        "id": "cyc-b",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 3,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 123,
+        "token_provenance": "approximation"
+      }
+    ],
+    "layout_trace": [
+      "instr-1",
+      "taskreq-1",
+      "cyc-a",
+      "cyc-b"
+    ],
+    "provenance": null,
+    "schema_version": "project_context.context_bundle.v1"
+  },
+  "bundle_hash": "26281a654f8c915af04a5b91032a82ca4c0f98f257c40df2d4e342158c6e2a09",
+  "bundle_order": [
+    "instr-1",
+    "taskreq-1",
+    "cyc-a",
+    "cyc-b"
+  ],
+  "bundle_tokens": 339,
+  "failure": null,
+  "fixture": "dependency-cycle",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": "[CONTEXT BUNDLE]\nid: dependency-cycle-req-medium-bundle\nitems: 4\n---\nApplication constraint (synthetic): never modify generated files.\n---\nInvestigate the migration failure (synthetic).\n---\nFirst cyclic note (synthetic).\n---\nSecond cyclic note (synthetic).\n[/CONTEXT BUNDLE]\n",
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "dependency-cycle-req-medium",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "dependency-cycle-task",
+    "usable_token_budget": 900
+  },
+  "result": {
+    "bundle_hash": "26281a654f8c915af04a5b91032a82ca4c0f98f257c40df2d4e342158c6e2a09",
+    "bundle_id": "dependency-cycle-req-medium-bundle",
+    "bundle_tokens": 339,
+    "failure": null,
+    "policy_version": "compiler-policy-v1",
+    "request_id": "dependency-cycle-req-medium",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": true,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 800,
+          "budget_before": 800,
+          "candidate_id": "cyc-a",
+          "content_identity": "cyc-a",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 100,
+          "position": 2,
+          "priority_band": "PREFERRED",
+          "reason_code": "admitted",
+          "reason_detail": "preferred-greedy",
+          "relevance": 0.6,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 800,
+          "budget_before": 800,
+          "candidate_id": "cyc-b",
+          "content_identity": "cyc-b",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 120,
+          "position": 3,
+          "priority_band": "PREFERRED",
+          "reason_code": "admitted",
+          "reason_detail": "preferred-greedy",
+          "relevance": 0.6,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 900,
+          "budget_before": 900,
+          "candidate_id": "instr-1",
+          "content_identity": "instr",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 60,
+          "position": 0,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 840,
+          "budget_before": 840,
+          "candidate_id": "taskreq-1",
+          "content_identity": "taskreq",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 40,
+          "position": 1,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "dependency-cycle-req-medium",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": true,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 800,
+        "budget_before": 800,
+        "candidate_id": "cyc-a",
+        "content_identity": "cyc-a",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 100,
+        "position": 2,
+        "priority_band": "PREFERRED",
+        "reason_code": "admitted",
+        "reason_detail": "preferred-greedy",
+        "relevance": 0.6,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 800,
+        "budget_before": 800,
+        "candidate_id": "cyc-b",
+        "content_identity": "cyc-b",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 120,
+        "position": 3,
+        "priority_band": "PREFERRED",
+        "reason_code": "admitted",
+        "reason_detail": "preferred-greedy",
+        "relevance": 0.6,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 900,
+        "budget_before": 900,
+        "candidate_id": "instr-1",
+        "content_identity": "instr",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 60,
+        "position": 0,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 840,
+        "budget_before": 840,
+        "candidate_id": "taskreq-1",
+        "content_identity": "taskreq",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 40,
+        "position": 1,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "dependency-cycle-req-medium",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}

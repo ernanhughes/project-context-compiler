@@ -1,0 +1,282 @@
+{
+  "admitted_candidate_ids": [
+    "instr-1",
+    "taskreq-1",
+    "useful-disc"
+  ],
+  "admitted_representation_ids": [
+    "full",
+    "full",
+    "full"
+  ],
+  "budget": "roomy",
+  "bundle": {
+    "created_at": "2026-09-23T00:00:00Z",
+    "evidence_class": "synthetic",
+    "id": "budget-slack-req-roomy-bundle",
+    "items": [
+      {
+        "authority": null,
+        "content": "Application constraint (synthetic): never modify generated files.",
+        "id": "instr-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 0,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 63,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Investigate the migration failure (synthetic).",
+        "id": "taskreq-1",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 1,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 43,
+        "token_provenance": "approximation"
+      },
+      {
+        "authority": null,
+        "content": "Useful migration note (synthetic).",
+        "id": "useful-disc",
+        "kind": "evidence",
+        "observed_at": null,
+        "position": 2,
+        "ref": null,
+        "schema_version": "project_context.context_item.v1",
+        "scope": null,
+        "semantic_id": null,
+        "source": "synthetic-fixture",
+        "token_count": 153,
+        "token_provenance": "approximation"
+      }
+    ],
+    "layout_trace": [
+      "instr-1",
+      "taskreq-1",
+      "useful-disc"
+    ],
+    "provenance": null,
+    "schema_version": "project_context.context_bundle.v1"
+  },
+  "bundle_hash": "66beba878f7cdd5bb4c94dce2501820120978ad7c0e56bbc006166a4eab9a4a6",
+  "bundle_order": [
+    "instr-1",
+    "taskreq-1",
+    "useful-disc"
+  ],
+  "bundle_tokens": 265,
+  "failure": null,
+  "fixture": "budget-slack",
+  "policy": {
+    "mandatory_form": "cheapest",
+    "min_discretionary_relevance": 0.3,
+    "order_roles": [
+      "instruction",
+      "task",
+      "state",
+      "evidence",
+      "support",
+      "tool"
+    ],
+    "policy_version": "compiler-policy-v1",
+    "repair": "drop-last-discretionary",
+    "schema_version": "project_context.compiler_policy.v1"
+  },
+  "rendered_text": "[CONTEXT BUNDLE]\nid: budget-slack-req-roomy-bundle\nitems: 3\n---\nApplication constraint (synthetic): never modify generated files.\n---\nInvestigate the migration failure (synthetic).\n---\nUseful migration note (synthetic).\n[/CONTEXT BUNDLE]\n",
+  "request": {
+    "active_scope": "synthetic-project-a",
+    "created_at": "2026-09-23T00:00:00Z",
+    "policy_version": "compiler-policy-v1",
+    "request_id": "budget-slack-req-roomy",
+    "required_ids": [],
+    "schema_version": "project_context.context_request.v1",
+    "task_id": "budget-slack-task",
+    "usable_token_budget": 3000
+  },
+  "result": {
+    "bundle_hash": "66beba878f7cdd5bb4c94dce2501820120978ad7c0e56bbc006166a4eab9a4a6",
+    "bundle_id": "budget-slack-req-roomy-bundle",
+    "bundle_tokens": 265,
+    "failure": null,
+    "policy_version": "compiler-policy-v1",
+    "request_id": "budget-slack-req-roomy",
+    "schema_version": "project_context.compilation_result.v1",
+    "success": true,
+    "trace": {
+      "entries": [
+        {
+          "budget_after": 2900,
+          "budget_before": 2900,
+          "candidate_id": "distract-d1",
+          "content_identity": "distract-d1",
+          "decision": "REJECTED_REDUNDANT",
+          "dependency_closure": [],
+          "marginal_cost": 400,
+          "position": null,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "no-earn",
+          "reason_detail": "below relevance threshold with no new coverage",
+          "relevance": 0.15,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 2900,
+          "budget_before": 2900,
+          "candidate_id": "distract-d2",
+          "content_identity": "distract-d2",
+          "decision": "REJECTED_REDUNDANT",
+          "dependency_closure": [],
+          "marginal_cost": 500,
+          "position": null,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "no-earn",
+          "reason_detail": "below relevance threshold with no new coverage",
+          "relevance": 0.2,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 3000,
+          "budget_before": 3000,
+          "candidate_id": "instr-1",
+          "content_identity": "instr",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 60,
+          "position": 0,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 2940,
+          "budget_before": 2940,
+          "candidate_id": "taskreq-1",
+          "content_identity": "taskreq",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 40,
+          "position": 1,
+          "priority_band": "MANDATORY",
+          "reason_code": "admitted",
+          "reason_detail": "mandatory",
+          "relevance": 1.0,
+          "representation_id": "full"
+        },
+        {
+          "budget_after": 2900,
+          "budget_before": 2900,
+          "candidate_id": "useful-disc",
+          "content_identity": "useful-disc",
+          "decision": "ADMITTED",
+          "dependency_closure": [],
+          "marginal_cost": 150,
+          "position": 2,
+          "priority_band": "DISCRETIONARY",
+          "reason_code": "admitted",
+          "reason_detail": "discretionary-greedy",
+          "relevance": 0.8,
+          "representation_id": "full"
+        }
+      ],
+      "policy_version": "compiler-policy-v1",
+      "request_id": "budget-slack-req-roomy",
+      "schema_version": "project_context.decision_trace.v1"
+    }
+  },
+  "success": true,
+  "trace": {
+    "entries": [
+      {
+        "budget_after": 2900,
+        "budget_before": 2900,
+        "candidate_id": "distract-d1",
+        "content_identity": "distract-d1",
+        "decision": "REJECTED_REDUNDANT",
+        "dependency_closure": [],
+        "marginal_cost": 400,
+        "position": null,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "no-earn",
+        "reason_detail": "below relevance threshold with no new coverage",
+        "relevance": 0.15,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 2900,
+        "budget_before": 2900,
+        "candidate_id": "distract-d2",
+        "content_identity": "distract-d2",
+        "decision": "REJECTED_REDUNDANT",
+        "dependency_closure": [],
+        "marginal_cost": 500,
+        "position": null,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "no-earn",
+        "reason_detail": "below relevance threshold with no new coverage",
+        "relevance": 0.2,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 3000,
+        "budget_before": 3000,
+        "candidate_id": "instr-1",
+        "content_identity": "instr",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 60,
+        "position": 0,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 2940,
+        "budget_before": 2940,
+        "candidate_id": "taskreq-1",
+        "content_identity": "taskreq",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 40,
+        "position": 1,
+        "priority_band": "MANDATORY",
+        "reason_code": "admitted",
+        "reason_detail": "mandatory",
+        "relevance": 1.0,
+        "representation_id": "full"
+      },
+      {
+        "budget_after": 2900,
+        "budget_before": 2900,
+        "candidate_id": "useful-disc",
+        "content_identity": "useful-disc",
+        "decision": "ADMITTED",
+        "dependency_closure": [],
+        "marginal_cost": 150,
+        "position": 2,
+        "priority_band": "DISCRETIONARY",
+        "reason_code": "admitted",
+        "reason_detail": "discretionary-greedy",
+        "relevance": 0.8,
+        "representation_id": "full"
+      }
+    ],
+    "policy_version": "compiler-policy-v1",
+    "request_id": "budget-slack-req-roomy",
+    "schema_version": "project_context.decision_trace.v1"
+  }
+}
