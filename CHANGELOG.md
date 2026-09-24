@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.2.0
+## 0.2.1
+
+Packaging only, no compiler behaviour change.
+
+- ship compiled `dist/` (types + maps + `context-compiler` bin)
+  so plain Node consumers can import the package without
+  TypeScript stripping; `main`/`exports` point at `dist`
+- CLI reports 0.2.1
 
 TypeScript canonical implementation. Behavioural port of the
 Python 0.1.0 reference (tag `python-v0.1.0`); compiler-policy-v1
