@@ -5,6 +5,8 @@
 export declare const COMPILER_POLICY_SCHEMA = "project_context.compiler_policy.v1";
 export declare const DEFAULT_POLICY_VERSION = "compiler-policy-v1";
 export declare const DEFAULT_ORDER_ROLES: readonly string[];
+/** How mandatory and required content chooses among its legal forms. */
+export declare const MANDATORY_FORMS: readonly ["cheapest"];
 export interface CompilerPolicy {
     readonly policyVersion: string;
     readonly minDiscretionaryRelevance: number;

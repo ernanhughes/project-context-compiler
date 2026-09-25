@@ -3,6 +3,12 @@
  * Every field of every one of the 42 cases is compared. Any
  * mismatch is either a TypeScript bug or a documented semantic
  * difference — never a regenerated expectation.
+ *
+ * The goldens are historical truth and are never edited. They use the
+ * v1 trace, whose `budget_after` repeats `budget_before` and whose
+ * `dependency_closure` is always empty. The engine now produces a v2
+ * trace; parity is checked on its v1 projection, and tests/core/trace-v2
+ * pins what v2 adds.
  */
 
 import { deepStrictEqual, equal, ok } from "node:assert/strict";
@@ -15,8 +21,8 @@ import {
   compileContext,
   renderBundleText,
   requestFromJSON,
-  resultToJSON,
-  traceToJSON,
+  resultToV1JSON,
+  traceToV1JSON,
   type ContextCandidate,
 } from "../../src/core/index.ts";
 import {
@@ -119,7 +125,7 @@ for (const file of goldenFiles()) {
       equal(golden["bundle"], null, "bundle null");
       equal(golden["rendered_text"], null, "rendered null");
     }
-    deepStrictEqual(traceToJSON(output.result.trace), golden["trace"], "trace bytes");
-    deepStrictEqual(resultToJSON(output.result), golden["result"], "result bytes");
+    deepStrictEqual(traceToV1JSON(output.result.trace), golden["trace"], "trace bytes (v1 projection)");
+    deepStrictEqual(resultToV1JSON(output.result), golden["result"], "result bytes (v1 projection)");
   });
 }

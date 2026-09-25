@@ -16,7 +16,7 @@ import { compileContext } from "./core/index.js";
 import { renderBundleText } from "./core/index.js";
 import { validateBundle, validateResult } from "./core/index.js";
 import { formatReport, loadManifest, loadPolicy, runCase, runConformance, } from "./conformance/index.js";
-const VERSION = "0.2.3";
+const VERSION = "0.3.0";
 function readJSON(path) {
     return JSON.parse(readFileSync(path, "utf-8"));
 }

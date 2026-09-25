@@ -185,6 +185,9 @@ PASS
 ```text
 0.1.0 = Python reference implementation (tag python-v0.1.0)
 0.2.0 = TypeScript canonical implementation
+0.3.0 = DecisionTrace and CompilationResult v2 (populated dependency
+        closure, real budget accounting, pulledInBy); mandatory_form
+        enforced; validators independent of the engine; selection unchanged
 ```
 
 Retrieve the Python source any time with:
@@ -193,8 +196,10 @@ Retrieve the Python source any time with:
 git checkout python-v0.1.0
 ```
 
-Serialized `project_context.*.v1` schemas are unchanged across the
-port: a language move is not a schema change.
+Serialized `project_context.*.v1` schemas were unchanged across the
+port: a language move is not a schema change. Trace and result moved to
+v2 in 0.3.0 because the meaning of their fields changed; v1 documents
+are still read and `traceToV1JSON` / `resultToV1JSON` project onto them.
 
 ## Ecosystem
 

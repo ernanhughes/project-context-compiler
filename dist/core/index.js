@@ -4,7 +4,7 @@
  * modules. See the architecture test pinning this boundary.
  */
 export { BUNDLE_SCHEMA, ITEM_SCHEMA_VERSION, buildBundle, bundleFromJSON, bundleToJSON, checkLayout, contentHash, renderedTokenTotal, } from "./bundle.js";
-export { COMPILATION_RESULT_SCHEMA, COMPILE_FAILURE_SCHEMA, CONTEXT_CANDIDATE_SCHEMA, CONTEXT_REQUEST_SCHEMA, DECISION_TRACE_SCHEMA, FAILURE_REASONS, REQUIREMENT_CLASSES, TRACE_DECISIONS, candidateFromJSON, candidateToJSON, failureFromJSON, failureToJSON, parseFailureReason, parseRequirementClass, parseTraceDecision, requestFromJSON, requestToJSON, resultFromJSON, resultToJSON, traceEntryFromJSON, traceEntryToJSON, traceFromJSON, traceToJSON, } from "./domain.js";
+export { COMPILATION_RESULT_SCHEMA, COMPILE_FAILURE_SCHEMA, CONTEXT_CANDIDATE_SCHEMA, CONTEXT_REQUEST_SCHEMA, DECISION_TRACE_SCHEMA, DECISION_TRACE_SCHEMA_V1, COMPILATION_RESULT_SCHEMA_V1, FAILURE_REASONS, REQUIREMENT_CLASSES, TRACE_DECISIONS, candidateFromJSON, candidateToJSON, failureFromJSON, failureToJSON, parseFailureReason, parseRequirementClass, parseTraceDecision, requestFromJSON, requestToJSON, resultFromJSON, resultToJSON, resultToV1JSON, traceEntryFromJSON, traceEntryToJSON, traceFromJSON, traceToJSON, traceToV1JSON, } from "./domain.js";
 export { BAND_ORDER, SEPARATOR, SEPARATOR_TOKENS, closureIds, compareStrings, compileContext, decorationTokens, dependsOnId, eligibility, headerTokens, itemRenderCost, validateInputs, } from "./engine.js";
 export { ITEM_SCHEMA, itemFromJSON, itemToJSON, makeItem, } from "./items.js";
 export { COMPILER_POLICY_SCHEMA, DEFAULT_ORDER_ROLES, DEFAULT_POLICY_VERSION, defaultPolicy, policyFromJSON, policyToJSON, } from "./policy.js";

@@ -9,9 +9,20 @@
  */
 export const CONTEXT_CANDIDATE_SCHEMA = "project_context.context_candidate.v1";
 export const CONTEXT_REQUEST_SCHEMA = "project_context.context_request.v1";
-export const DECISION_TRACE_SCHEMA = "project_context.decision_trace.v1";
+/**
+ * Trace and result schemas are at v2. v1 is the serialisation the
+ * Python reference and its frozen goldens use: `budget_after` repeated
+ * `budget_before`, `dependency_closure` was always empty, and there was
+ * no `pulled_in_by`. v1 documents are still readable, and `traceToV1JSON`
+ * / `resultToV1JSON` project a v2 result onto that historical shape so
+ * parity with the frozen goldens stays checkable. Candidate, request,
+ * bundle and failure schemas are unchanged.
+ */
+export const DECISION_TRACE_SCHEMA = "project_context.decision_trace.v2";
+export const DECISION_TRACE_SCHEMA_V1 = "project_context.decision_trace.v1";
 export const COMPILE_FAILURE_SCHEMA = "project_context.compile_failure.v1";
-export const COMPILATION_RESULT_SCHEMA = "project_context.compilation_result.v1";
+export const COMPILATION_RESULT_SCHEMA = "project_context.compilation_result.v2";
+export const COMPILATION_RESULT_SCHEMA_V1 = "project_context.compilation_result.v1";
 export const REQUIREMENT_CLASSES = [
     "MANDATORY",
     "REQUIRED",
@@ -25,7 +36,6 @@ export const TRACE_DECISIONS = [
     "REJECTED_REDUNDANT",
     "REJECTED_ALTERNATIVE",
     "REJECTED_DEPENDENCY",
-    "REJECTED_GROUP",
 ];
 export const FAILURE_REASONS = [
     "INSUFFICIENT_BUDGET",
@@ -201,6 +211,7 @@ export function traceEntryToJSON(e) {
         relevance: e.relevance,
         marginal_cost: e.marginalCost,
         dependency_closure: [...e.dependencyClosure],
+        pulled_in_by: [...e.pulledInBy],
         budget_before: e.budgetBefore,
         budget_after: e.budgetAfter,
         position: e.position,
@@ -228,6 +239,7 @@ export function traceEntryFromJSON(data) {
             ? raw["marginal_cost"]
             : parseInt(String(raw["marginal_cost"] ?? 0), 10),
         dependencyClosure: strList(raw, "dependency_closure"),
+        pulledInBy: strList(raw, "pulled_in_by"),
         budgetBefore: Number.isInteger(raw["budget_before"])
             ? raw["budget_before"]
             : parseInt(String(raw["budget_before"] ?? 0), 10),
@@ -237,7 +249,23 @@ export function traceEntryFromJSON(data) {
         position,
     };
 }
+export function traceEntryToV1JSON(e) {
+    const { pulled_in_by: _dropped, ...rest } = traceEntryToJSON(e);
+    void _dropped;
+    return { ...rest, dependency_closure: [], budget_after: e.budgetBefore };
+}
+/** Project a trace onto the v1 shape (Python reference serialisation). */
+export function traceToV1JSON(t) {
+    return {
+        schema_version: DECISION_TRACE_SCHEMA_V1,
+        request_id: t.requestId,
+        policy_version: t.policyVersion,
+        entries: t.entries.map(traceEntryToV1JSON),
+    };
+}
 export function traceToJSON(t) {
+    if (t.legacySchema === "v1")
+        return traceToV1JSON(t);
     return {
         schema_version: DECISION_TRACE_SCHEMA,
         request_id: t.requestId,
@@ -251,17 +279,21 @@ export function traceFromJSON(data) {
     }
     const raw = data;
     const version = (raw["schema_version"] ?? DECISION_TRACE_SCHEMA);
-    if (version !== DECISION_TRACE_SCHEMA) {
+    if (version !== DECISION_TRACE_SCHEMA &&
+        version !== DECISION_TRACE_SCHEMA_V1) {
         throw new Error(`unsupported DecisionTrace schema: ${JSON.stringify(version)}`);
     }
     const entries = raw["entries"] ?? [];
     if (!Array.isArray(entries))
         throw new Error("invalid entries");
-    return {
+    const trace = {
         requestId: strField(raw, "request_id"),
         policyVersion: optStr(raw, "policy_version", ""),
         entries: entries.map(traceEntryFromJSON),
     };
+    return version === DECISION_TRACE_SCHEMA_V1
+        ? { ...trace, legacySchema: "v1" }
+        : trace;
 }
 export function failureToJSON(f) {
     return {
@@ -298,9 +330,18 @@ export function failureFromJSON(data) {
         diagnostic: optStr(raw, "diagnostic", ""),
     };
 }
+export function resultToV1JSON(r) {
+    return {
+        ...resultToJSON(r),
+        schema_version: COMPILATION_RESULT_SCHEMA_V1,
+        trace: traceToV1JSON(r.trace),
+    };
+}
 export function resultToJSON(r) {
     return {
-        schema_version: COMPILATION_RESULT_SCHEMA,
+        schema_version: r.trace.legacySchema === "v1"
+            ? COMPILATION_RESULT_SCHEMA_V1
+            : COMPILATION_RESULT_SCHEMA,
         request_id: r.requestId,
         policy_version: r.policyVersion,
         success: r.success,
@@ -318,7 +359,8 @@ export function resultFromJSON(data) {
     const raw = data;
     const version = (raw["schema_version"] ??
         COMPILATION_RESULT_SCHEMA);
-    if (version !== COMPILATION_RESULT_SCHEMA) {
+    if (version !== COMPILATION_RESULT_SCHEMA &&
+        version !== COMPILATION_RESULT_SCHEMA_V1) {
         throw new Error(`unsupported CompilationResult schema: ${JSON.stringify(version)}`);
     }
     const failure = raw["failure"] ?? null;

@@ -1,7 +1,9 @@
 /**
- * Independent validators, ported from the Python reference. Every
- * success legality is recomputed from explicit inputs rather than
- * trusted from engine internals.
+ * Independent validators. Every success legality is recomputed from
+ * explicit inputs rather than trusted from engine internals. That
+ * includes the four hard-eligibility predicates, which are written out
+ * again here on purpose: a checker that asked the engine whether a
+ * candidate was legal could only agree with the engine.
  */
 
 import type { ContextBundle } from "./bundle.ts";
@@ -11,8 +13,19 @@ import type {
   ContextRequest,
   RequirementClass,
 } from "./domain.ts";
-import { eligibility } from "./engine.ts";
 import type { CompilerPolicy } from "./policy.ts";
+
+/**
+ * The hard-eligibility rules, restated independently of the engine.
+ * Returns the name of the first failed rule, or null when legal.
+ */
+function illegality(c: ContextCandidate): string | null {
+  if (c.scopeEligible !== true) return "scope";
+  if (c.freshnessEligible !== true) return "freshness";
+  if (c.authorityEligible !== true) return "authority";
+  if (c.formRank < c.minRank) return "floor";
+  return null;
+}
 
 export function validateBundle(
   bundle: ContextBundle,
@@ -45,9 +58,9 @@ export function validateBundle(
       problems.push(`bundle item not a candidate: ${itemId}`);
       continue;
     }
-    const [eligible, code] = eligibility(candidate);
-    if (!eligible) {
-      problems.push(`admitted hard-ineligible candidate ${itemId}: ${code}`);
+    const failed = illegality(candidate);
+    if (failed !== null) {
+      problems.push(`admitted hard-ineligible candidate ${itemId}: ${failed}`);
     }
     if (candidate.formRank < candidate.minRank) {
       problems.push(`admitted candidate below floor: ${itemId}`);
@@ -141,6 +154,63 @@ export function validateResult(
   }
   if (!result.success && result.bundleId !== null) {
     problems.push("failure carries a bundle identity");
+  }
+  if (result.trace.legacySchema !== "v1") {
+    problems.push(...traceSemantics(result, candidates));
+  }
+  return problems;
+}
+
+/** Transitive dependencies in discovery order, excluding the start. */
+function transitiveDependencies(
+  start: string,
+  byId: ReadonlyMap<string, ContextCandidate>,
+): string[] {
+  const seen = new Set<string>([start]);
+  const order: string[] = [];
+  const visit = (id: string): void => {
+    for (const dep of byId.get(id)?.dependsOn ?? []) {
+      if (seen.has(dep)) continue;
+      seen.add(dep);
+      order.push(dep);
+      visit(dep);
+    }
+  };
+  visit(start);
+  return order;
+}
+
+/**
+ * v2 trace semantics: an admission must show the budget it spent and,
+ * where the candidate has dependencies, the closure that came with it.
+ * These are exactly the two fields a v1 trace left meaningless.
+ */
+function traceSemantics(
+  result: CompilationResult,
+  candidates: readonly ContextCandidate[],
+): string[] {
+  const problems: string[] = [];
+  const byId = new Map(candidates.map((c) => [c.candidateId, c]));
+  for (const entry of result.trace.entries) {
+    const candidate = byId.get(entry.candidateId);
+    if (!candidate) continue;
+    const expectedClosure = transitiveDependencies(entry.candidateId, byId);
+    if (
+      entry.dependencyClosure.length !== expectedClosure.length ||
+      entry.dependencyClosure.some((id, i) => id !== expectedClosure[i])
+    ) {
+      problems.push(`trace closure wrong for ${entry.candidateId}`);
+    }
+    if (entry.decision === "ADMITTED") {
+      if (entry.budgetBefore - entry.budgetAfter < candidate.tokenCount) {
+        problems.push(`trace budget did not advance for ${entry.candidateId}`);
+      }
+    } else if (entry.budgetAfter > entry.budgetBefore) {
+      problems.push(`trace budget rose for ${entry.candidateId}`);
+    }
+    if (entry.pulledInBy.length > 0 && entry.decision !== "ADMITTED") {
+      problems.push(`trace pulled-in-by on non-admission ${entry.candidateId}`);
+    }
   }
   return problems;
 }

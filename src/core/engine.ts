@@ -321,6 +321,11 @@ class CompileState {
     candidates: ContextCandidate[],
     policy: CompilerPolicy,
   ) {
+    if (policy.mandatoryForm !== "cheapest") {
+      throw new Error(
+        `unsupported mandatory_form: ${JSON.stringify(policy.mandatoryForm)}`,
+      );
+    }
     this.request = request;
     this.policy = policy;
     this.byId = new Map(candidates.map((c) => [c.candidateId, c]));
@@ -347,9 +352,15 @@ class CompileState {
     reasonCode: string,
     reasonDetail: string,
     marginal: number,
-    closure: readonly string[],
+    _closure: readonly string[],
     position: number | null,
+    accounting?: {
+      readonly before: number;
+      readonly after: number;
+      readonly pulledInBy: readonly string[];
+    },
   ): void {
+    void _closure; // superseded: the closure is computed from the candidate
     this.entries.set(candidate.candidateId, {
       candidateId: candidate.candidateId,
       contentIdentity: candidate.contentIdentity,
@@ -360,9 +371,10 @@ class CompileState {
       priorityBand: this.effectiveBand(candidate),
       relevance: candidate.relevance,
       marginalCost: marginal,
-      dependencyClosure: [...closure],
-      budgetBefore: this.remaining,
-      budgetAfter: this.remaining,
+      dependencyClosure: closureIds(candidate.candidateId, this.byId).slice(1),
+      pulledInBy: accounting ? [...accounting.pulledInBy] : [],
+      budgetBefore: accounting ? accounting.before : this.remaining,
+      budgetAfter: accounting ? accounting.after : this.remaining,
       position,
     });
   }
@@ -420,14 +432,33 @@ class CompileState {
     return [cost, closure];
   }
 
-  commit(wanted: readonly string[], _cost: number, reasonDetail: string): void {
-    void _cost;
+  /**
+   * Admit a unit: the requested candidates (`roots`) and everything they
+   * need. The unit's whole cost is charged here, once, and every entry
+   * records the budget before and after the unit. A candidate admitted
+   * only as a dependency records which roots pulled it in.
+   */
+  commit(
+    wanted: readonly string[],
+    cost: number,
+    reasonDetail: string,
+    roots: readonly string[],
+  ): void {
+    const before = this.remaining;
+    this.remaining -= cost;
+    const after = this.remaining;
+    const rootSet = new Set(roots);
     for (const node of sortedStrings(wanted)) {
       const candidate = this.byId.get(node);
       if (!candidate) continue;
       this.admitted.set(node, candidate);
       this.admittedContent.add(candidate.contentIdentity);
       for (const key of candidate.coverageKeys) this.covered.add(key);
+      const pulledInBy = rootSet.has(node)
+        ? []
+        : sortedStrings(
+            roots.filter((root) => closureIds(root, this.byId).includes(node)),
+          );
       this.record(
         candidate,
         "ADMITTED",
@@ -436,6 +467,7 @@ class CompileState {
         candidate.tokenCount,
         [],
         null,
+        { before, after, pulledInBy },
       );
     }
   }
@@ -518,8 +550,12 @@ class CompileState {
               `mandatory ${identity} blocked: ${blocked}`,
             );
           }
-          this.commit(closure, cost, "mandatory");
-          this.remaining -= cost;
+          this.commit(
+            closure,
+            cost,
+            "mandatory",
+            group.map((m) => m.candidateId),
+          );
           placed = true;
           break;
         }
@@ -565,8 +601,7 @@ class CompileState {
             `required group exceeds remaining budget: ${members.join(", ")}`,
           );
         }
-        this.commit(closure, cost, "required");
-        this.remaining -= cost;
+        this.commit(closure, cost, "required", members);
       }
       for (const identity of sortedStrings(singleForms.keys())) {
         if (this.admittedContent.has(identity)) continue;
@@ -588,8 +623,7 @@ class CompileState {
               `required form blocked: ${blocked}`,
             );
           }
-          this.commit(closure, cost, "required");
-          this.remaining -= cost;
+          this.commit(closure, cost, "required", [form.candidateId]);
           placed = true;
           for (const other of forms) {
             if (other.candidateId !== form.candidateId) {
@@ -749,8 +783,12 @@ class CompileState {
       const [cost, closure] = this.marginalFor(
         bestUnit.map((m) => m.candidateId),
       );
-      this.commit(closure, cost, `${band.toLowerCase()}-greedy`);
-      this.remaining -= cost;
+      this.commit(
+        closure,
+        cost,
+        `${band.toLowerCase()}-greedy`,
+        bestUnit.map((m) => m.candidateId),
+      );
     }
   }
 

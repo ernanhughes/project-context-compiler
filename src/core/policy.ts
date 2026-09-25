@@ -15,6 +15,9 @@ export const DEFAULT_ORDER_ROLES: readonly string[] = [
   "tool",
 ];
 
+/** How mandatory and required content chooses among its legal forms. */
+export const MANDATORY_FORMS = ["cheapest"] as const;
+
 export interface CompilerPolicy {
   readonly policyVersion: string;
   readonly minDiscretionaryRelevance: number;
@@ -52,6 +55,15 @@ export function policyFromJSON(data: unknown): CompilerPolicy {
   ) {
     throw new Error("invalid order_roles");
   }
+  const mandatoryForm =
+    typeof raw["mandatory_form"] === "string"
+      ? (raw["mandatory_form"] as string)
+      : "cheapest";
+  if (!(MANDATORY_FORMS as readonly string[]).includes(mandatoryForm)) {
+    throw new Error(
+      `unsupported mandatory_form: ${JSON.stringify(mandatoryForm)}`,
+    );
+  }
   return {
     policyVersion:
       typeof raw["policy_version"] === "string"
@@ -60,10 +72,7 @@ export function policyFromJSON(data: unknown): CompilerPolicy {
     minDiscretionaryRelevance: Number(
       raw["min_discretionary_relevance"] ?? 0.3,
     ),
-    mandatoryForm:
-      typeof raw["mandatory_form"] === "string"
-        ? (raw["mandatory_form"] as string)
-        : "cheapest",
+    mandatoryForm,
     orderRoles: [...(orderRoles as string[])],
     repair:
       typeof raw["repair"] === "string"

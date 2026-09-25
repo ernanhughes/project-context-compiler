@@ -12,6 +12,8 @@ export const DEFAULT_ORDER_ROLES = [
     "support",
     "tool",
 ];
+/** How mandatory and required content chooses among its legal forms. */
+export const MANDATORY_FORMS = ["cheapest"];
 export function policyToJSON(policy) {
     return {
         schema_version: COMPILER_POLICY_SCHEMA,
@@ -36,14 +38,18 @@ export function policyFromJSON(data) {
         !orderRoles.every((v) => typeof v === "string")) {
         throw new Error("invalid order_roles");
     }
+    const mandatoryForm = typeof raw["mandatory_form"] === "string"
+        ? raw["mandatory_form"]
+        : "cheapest";
+    if (!MANDATORY_FORMS.includes(mandatoryForm)) {
+        throw new Error(`unsupported mandatory_form: ${JSON.stringify(mandatoryForm)}`);
+    }
     return {
         policyVersion: typeof raw["policy_version"] === "string"
             ? raw["policy_version"]
             : DEFAULT_POLICY_VERSION,
         minDiscretionaryRelevance: Number(raw["min_discretionary_relevance"] ?? 0.3),
-        mandatoryForm: typeof raw["mandatory_form"] === "string"
-            ? raw["mandatory_form"]
-            : "cheapest",
+        mandatoryForm,
         orderRoles: [...orderRoles],
         repair: typeof raw["repair"] === "string"
             ? raw["repair"]

@@ -231,6 +231,9 @@ class CompileState {
     entries = new Map();
     requiredIds;
     constructor(request, candidates, policy) {
+        if (policy.mandatoryForm !== "cheapest") {
+            throw new Error(`unsupported mandatory_form: ${JSON.stringify(policy.mandatoryForm)}`);
+        }
         this.request = request;
         this.policy = policy;
         this.byId = new Map(candidates.map((c) => [c.candidateId, c]));
@@ -248,7 +251,8 @@ class CompileState {
         }
         return candidate.requirement;
     }
-    record(candidate, decision, reasonCode, reasonDetail, marginal, closure, position) {
+    record(candidate, decision, reasonCode, reasonDetail, marginal, _closure, position, accounting) {
+        void _closure; // superseded: the closure is computed from the candidate
         this.entries.set(candidate.candidateId, {
             candidateId: candidate.candidateId,
             contentIdentity: candidate.contentIdentity,
@@ -259,9 +263,10 @@ class CompileState {
             priorityBand: this.effectiveBand(candidate),
             relevance: candidate.relevance,
             marginalCost: marginal,
-            dependencyClosure: [...closure],
-            budgetBefore: this.remaining,
-            budgetAfter: this.remaining,
+            dependencyClosure: closureIds(candidate.candidateId, this.byId).slice(1),
+            pulledInBy: accounting ? [...accounting.pulledInBy] : [],
+            budgetBefore: accounting ? accounting.before : this.remaining,
+            budgetAfter: accounting ? accounting.after : this.remaining,
             position,
         });
     }
@@ -311,8 +316,17 @@ class CompileState {
         }
         return [cost, closure];
     }
-    commit(wanted, _cost, reasonDetail) {
-        void _cost;
+    /**
+     * Admit a unit: the requested candidates (`roots`) and everything they
+     * need. The unit's whole cost is charged here, once, and every entry
+     * records the budget before and after the unit. A candidate admitted
+     * only as a dependency records which roots pulled it in.
+     */
+    commit(wanted, cost, reasonDetail, roots) {
+        const before = this.remaining;
+        this.remaining -= cost;
+        const after = this.remaining;
+        const rootSet = new Set(roots);
         for (const node of sortedStrings(wanted)) {
             const candidate = this.byId.get(node);
             if (!candidate)
@@ -321,7 +335,10 @@ class CompileState {
             this.admittedContent.add(candidate.contentIdentity);
             for (const key of candidate.coverageKeys)
                 this.covered.add(key);
-            this.record(candidate, "ADMITTED", "admitted", reasonDetail, candidate.tokenCount, [], null);
+            const pulledInBy = rootSet.has(node)
+                ? []
+                : sortedStrings(roots.filter((root) => closureIds(root, this.byId).includes(node)));
+            this.record(candidate, "ADMITTED", "admitted", reasonDetail, candidate.tokenCount, [], null, { before, after, pulledInBy });
         }
     }
     formsOf(contentIdentity) {
@@ -373,8 +390,7 @@ class CompileState {
                     if (blocked) {
                         return this.fail("UNSATISFIED_DEPENDENCY", [identity], `mandatory ${identity} blocked: ${blocked}`);
                     }
-                    this.commit(closure, cost, "mandatory");
-                    this.remaining -= cost;
+                    this.commit(closure, cost, "mandatory", group.map((m) => m.candidateId));
                     placed = true;
                     break;
                 }
@@ -407,8 +423,7 @@ class CompileState {
                 if (cost > this.remaining) {
                     return this.fail("UNRESOLVED_REQUIRED_GROUP", members, `required group exceeds remaining budget: ${members.join(", ")}`);
                 }
-                this.commit(closure, cost, "required");
-                this.remaining -= cost;
+                this.commit(closure, cost, "required", members);
             }
             for (const identity of sortedStrings(singleForms.keys())) {
                 if (this.admittedContent.has(identity))
@@ -429,8 +444,7 @@ class CompileState {
                     if (blocked) {
                         return this.fail("UNSATISFIED_DEPENDENCY", [form.candidateId], `required form blocked: ${blocked}`);
                     }
-                    this.commit(closure, cost, "required");
-                    this.remaining -= cost;
+                    this.commit(closure, cost, "required", [form.candidateId]);
                     placed = true;
                     for (const other of forms) {
                         if (other.candidateId !== form.candidateId) {
@@ -556,8 +570,7 @@ class CompileState {
             });
             const bestUnit = ranked[0]?.[1] ?? [];
             const [cost, closure] = this.marginalFor(bestUnit.map((m) => m.candidateId));
-            this.commit(closure, cost, `${band.toLowerCase()}-greedy`);
-            this.remaining -= cost;
+            this.commit(closure, cost, `${band.toLowerCase()}-greedy`, bestUnit.map((m) => m.candidateId));
         }
     }
     closeOutAlternatives(band) {
