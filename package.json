@@ -32,7 +32,7 @@
     "prepack": "npm run build",
     "prepare": "node -e \"try{require('fs').accessSync('dist/core/index.js')}catch{process.exit(1)}\" || npm run build",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/core/*.test.ts tests/conformance/*.test.ts tests/opencode/*.test.ts",
+    "test": "node --test tests/core/*.test.ts tests/builder/*.test.ts tests/conformance/*.test.ts tests/opencode/*.test.ts",
     "lint": "prettier --check .",
     "format": "prettier --write .",
     "pack-check": "npm pack --dry-run",

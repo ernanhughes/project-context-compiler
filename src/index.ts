@@ -7,5 +7,6 @@
  */
 
 export * from "./core/index.ts";
+export * from "./builder/index.ts";
 export { default } from "./opencode/plugin.ts";
 export { PLUGIN_ID } from "./opencode/plugin.ts";

@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+Candidate Builder (`src/builder`, exported from the package root):
+heterogeneous available information in, `ContextCandidate[]` out
+through the unchanged `project_context.context_candidate.v1`
+schema. File/instruction, tool, and state adapters; observation
+versus candidate separation; scope, freshness, authority,
+requirement, and floor derivation with per-field provenance;
+full/compact/anchor/reference forms sharing one content identity;
+tool-output-to-definition dependencies; structural conflict
+grouping with a marker; deterministic identity and replay; failure
+taxonomy with fail-closed aborts and fail-open skips. 24 tests;
+full suite green with no existing test touched. See
+`docs/candidate-builder.md`. No compiler behaviour change.
+
 ## 0.3.0
 
 Trace semantics repaired. Selection behaviour is unchanged: on all 42

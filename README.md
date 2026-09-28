@@ -78,6 +78,30 @@ D excluded despite spare capacity (earns nothing)
 or an explicit CompileFailure if B + C cannot legally fit
 ```
 
+## Candidate Builder
+
+Upstream of the compiler: heterogeneous available information in,
+comparable `ContextCandidate[]` out, through the unchanged
+candidate schema. It establishes what _could_ enter context and
+makes those possibilities comparable; it never decides admission,
+rank, budget fit, or usefulness.
+
+```ts
+import {
+  buildCandidates,
+  defaultBuilderPolicy,
+} from "project-context-compiler";
+
+const built = buildCandidates(request, availableInformation, policy);
+// built.candidates: ContextCandidate[]  — feed straight into compileContext
+// built.trace: which sources, observations, rejections, derivations,
+//   dependencies, conflicts, and (empty in v1) model judgments
+// built.metrics: structural counts, never a quality score
+```
+
+Full boundary, failure taxonomy, and measured worked example:
+`docs/candidate-builder.md`.
+
 ## Failure is a feature
 
 > If no legal bundle exists, Context Compiler reports failure

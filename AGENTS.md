@@ -43,6 +43,13 @@ package. The Python 0.1.0 reference is frozen under tag
     `project-context-opencode`.
 13. **Conformance fixtures and goldens immutable.** Never
     regenerate expectations from the implementation under test.
+14. **Candidate Builder is upstream, under the same purity rules.**
+    `src/builder` turns heterogeneous available information into
+    `ContextCandidate[]` through the unchanged v1 schema. It never
+    decides admission, rank, budget fit, or usefulness; it never
+    calls a model. Same determinism contract as core (identical
+    inputs yield identical candidates and trace; only the
+    build-latency metric may differ). A boundary test pins this.
 
 ## Cross-language traps
 
