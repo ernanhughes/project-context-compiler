@@ -6,6 +6,7 @@
  * github:ernanhughes/project-context-compiler`.
  */
 export * from "./core/index.js";
+export * from "./builder/index.js";
 export { default } from "./opencode/plugin.js";
 export { PLUGIN_ID } from "./opencode/plugin.js";
 //# sourceMappingURL=index.js.map
