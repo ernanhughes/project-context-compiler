@@ -1,0 +1,9 @@
+{
+  "request_id": "greedy-false-refusal",
+  "task_id": "completeness-audit",
+  "usable_token_budget": 800,
+  "created_at": "2026-01-01T00:00:00Z",
+  "active_scope": "s",
+  "required_ids": [],
+  "policy_version": "compiler-policy-v1"
+}
