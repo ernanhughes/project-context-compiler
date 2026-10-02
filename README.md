@@ -276,3 +276,15 @@ npm run lint
 ## Licence
 
 Apache-2.0. See `LICENSE`.
+
+## Capability provider
+
+- **Capability:** bounded deterministic context assembly under explicit budgets and policies.
+- **Interfaces:** OpenCode plugin project-context.compiler: context_compiler_compile, context_compiler_validate and context_compiler_inspect; TypeScript compiler/builder/validator library; context-compiler CLI/JSON boundary; no context hooks.
+- **Current maturity:** TESTED+INTEGRATED; structural conformance and dependency use do not establish behavioural usefulness.
+- **Evidence:** README records 42-case frozen Python parity with zero semantic mismatches; candidate-builder documentation/tests record 24 cases. Suites were not rerun in this documentation pass.
+- **Known limitations:** Bounded deterministic assembly != optimal context != retrieval replacement != behavioural usefulness. Automatic assembly/injection belongs to a later integration layer.
+- **Used by:** project-context-opencode (pinned tarball runtime dependency); project-context (research harness through CLI/JSON).
+- **Registry:** Language `planning/capability-providers/` (Language-side availability index; this repository is the source of truth for itself).
+- **Evidence snapshot:** Audited 2026-10-02 against commit b80772b7.
+  See repository history and current status for later changes.
